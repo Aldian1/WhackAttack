@@ -7,12 +7,16 @@ public class _NetworkManager : MonoBehaviour {
 
     public GameObject ConnectionDetails;
 
+    public GameObject loginscreen;
+
     public GameObject player;
 
     public Transform spawn;
+
+    public string PlayersName;
     // Use this for initialization
 	void Start () {
-        Connect();
+      
 	}
 	
 	void Update()
@@ -22,10 +26,11 @@ public class _NetworkManager : MonoBehaviour {
     }
 
 
-    void Connect()
+    public void Connect(Text PlayerName)
     {
         PhotonNetwork.ConnectUsingSettings("0.1");
-
+        PlayersName = PlayerName.text;
+        loginscreen.SetActive(false);
     }
 
 
@@ -59,6 +64,7 @@ public class _NetworkManager : MonoBehaviour {
         go.GetComponent<_Player>().enabled = true;
         go.AddComponent<Rigidbody>();
         go.GetComponent<Rigidbody>().freezeRotation = true;
+        go.GetComponentInChildren<Text>().text = PlayersName;
 
     }
 }
