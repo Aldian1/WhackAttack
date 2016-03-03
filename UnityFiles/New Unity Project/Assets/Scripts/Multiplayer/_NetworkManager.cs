@@ -2,12 +2,12 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class _NetworkManager : MonoBehaviour {
+public class _NetworkManager : Photon.MonoBehaviour {
 
 
-    public GameObject ConnectionDetails;
+    public Text ConnectionDetails;
 
-    public GameObject loginscreen;
+    public GameObject loginscreen,connectionscreen,mainscreen,bg;
 
     public GameObject player;
 
@@ -21,7 +21,12 @@ public class _NetworkManager : MonoBehaviour {
 	
 	void Update()
     {
-        ConnectionDetails.GetComponent<Text>().text = "Connection Details: " + PhotonNetwork.connectionStateDetailed.ToString();
+      if(PhotonNetwork.connecting)
+        {
+            ConnectionDetails.text = PhotonNetwork.connectionStateDetailed.ToString();
+            
+
+        }
 
     }
 
@@ -31,18 +36,26 @@ public class _NetworkManager : MonoBehaviour {
         PhotonNetwork.ConnectUsingSettings("0.1");
         PlayersName = PlayerName.text;
         loginscreen.SetActive(false);
+        connectionscreen.SetActive(true);
     }
 
 
     public void OnConnectedToMaster()
     {
-        PhotonNetwork.JoinRandomRoom();
+        connectionscreen.SetActive(false);
+        mainscreen.SetActive(true);
+       
 
     }
 
+    public void StartQue()
+    {
+        PhotonNetwork.JoinRandomRoom();
+        mainscreen.SetActive(false);
+        bg.SetActive(false);
+    }
 
-
-        void OnPhotonRandomJoinFailed()
+    void OnPhotonRandomJoinFailed()
     {
         Debug.Log("Joined failed");
         PhotonNetwork.CreateRoom(null);
@@ -66,5 +79,15 @@ public class _NetworkManager : MonoBehaviour {
         go.GetComponent<Rigidbody>().freezeRotation = true;
         go.GetComponentInChildren<Text>().text = PlayersName;
 
+    }
+
+    public void quit()
+    {
+        PhotonNetwork.Disconnect();
+    }
+
+    void OnDisconnectedFromPhoton()
+    {
+        Application.Quit();
     }
 }
