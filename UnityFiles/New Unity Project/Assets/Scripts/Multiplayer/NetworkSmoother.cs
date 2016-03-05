@@ -8,11 +8,14 @@ public class NetworkSmoother : Photon.MonoBehaviour {
     Quaternion realrot;
    public string name_;
 
+    public Transform childsprite;
     public Text nametext;
 	// Use this for initialization
 	void Start () {
         name_ = this.GetComponentInChildren<Text>().text;
         nametext = this.GetComponentInChildren<Text>();
+        childsprite = transform.GetChild(0);
+
     }
 	
 	// Update is called once per frame
@@ -22,7 +25,7 @@ public class NetworkSmoother : Photon.MonoBehaviour {
         else
         {
             transform.position = Vector3.Lerp(transform.position, realpos, .1F);
-            transform.rotation = Quaternion.Lerp(transform.rotation, realrot, .1F);
+            childsprite.rotation = Quaternion.Lerp(childsprite.rotation, realrot, .1F);
             nametext.text = name_;
             
         }
@@ -35,7 +38,7 @@ public class NetworkSmoother : Photon.MonoBehaviour {
 
             //sending data to others
             stream.SendNext(transform.position);
-            stream.SendNext(transform.rotation);
+            stream.SendNext(childsprite.rotation);
             stream.SendNext((string)name_);
         }
         else

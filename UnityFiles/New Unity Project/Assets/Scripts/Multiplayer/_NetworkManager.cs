@@ -74,7 +74,7 @@ public class _NetworkManager : Photon.MonoBehaviour {
         Debug.Log("runonce");
        GameObject go = PhotonNetwork.Instantiate("Player", spawn.position, Quaternion.identity,0) as GameObject;
 
-        go.GetComponent<_Player>().enabled = true;
+        go.GetComponent<PlayerControl>().enabled = true;
         go.AddComponent<Rigidbody>();
         go.GetComponent<Rigidbody>().freezeRotation = true;
         go.GetComponentInChildren<Text>().text = PlayersName;
