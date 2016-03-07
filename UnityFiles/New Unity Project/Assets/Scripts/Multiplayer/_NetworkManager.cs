@@ -14,9 +14,18 @@ public class _NetworkManager : Photon.MonoBehaviour {
     public Transform spawn;
 
     public string PlayersName;
+
+    public Sprite[] Heads;
+    public Sprite[] Boomerangs;
+
+    private int currentsprite;
+
+    public Image avatar;
     // Use this for initialization
 	void Start () {
-      
+
+        avatar.sprite = Heads[0];
+
 	}
 	
 	void Update()
@@ -33,7 +42,7 @@ public class _NetworkManager : Photon.MonoBehaviour {
 
     public void Connect(Text PlayerName)
     {
-        PhotonNetwork.ConnectUsingSettings("0.1");
+        PhotonNetwork.ConnectUsingSettings("0.2");
         PlayersName = PlayerName.text;
         loginscreen.SetActive(false);
         connectionscreen.SetActive(true);
@@ -78,7 +87,8 @@ public class _NetworkManager : Photon.MonoBehaviour {
         go.AddComponent<Rigidbody>();
         go.GetComponent<Rigidbody>().freezeRotation = true;
         go.GetComponentInChildren<Text>().text = PlayersName;
-
+        go.GetComponent<NetworkSmoother>().head_ = Heads[currentsprite];
+        go.GetComponent<NetworkSmoother>().headnum = currentsprite;
     }
 
     public void quit()
@@ -89,5 +99,32 @@ public class _NetworkManager : Photon.MonoBehaviour {
     void OnDisconnectedFromPhoton()
     {
         Application.Quit();
+    }
+
+    public void ChangeAvatar(int button)
+    {
+        //left
+        if(button == 0)
+        {
+            currentsprite -= 1;
+
+        }
+        //right
+        if (button == 1)
+        {
+            currentsprite += 1;
+        }
+
+        //overflow checker
+        if(currentsprite >= Heads.Length)
+        {
+            currentsprite = 0;
+        }else if(currentsprite < 0)
+        {
+            currentsprite = Heads.Length;
+        }
+
+        //set the current sprite
+        avatar.sprite = Heads[currentsprite];
     }
 }

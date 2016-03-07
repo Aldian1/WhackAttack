@@ -9,13 +9,32 @@ public class NetworkSmoother : Photon.MonoBehaviour {
    public string name_;
 
     public Transform childsprite;
+
+    public GameObject face, boomerang;
     public Text nametext;
-	// Use this for initialization
-	void Start () {
+
+    public Sprite head_;
+    public Sprite boomerang_;
+
+    private Sprite[] otherhead;
+
+    public int headnum;
+
+
+  
+    // Use this for initialization
+    void Start () {
+
+        //getting any components that we need
+      
         name_ = this.GetComponentInChildren<Text>().text;
         nametext = this.GetComponentInChildren<Text>();
-        childsprite = transform.GetChild(0);
-
+        childsprite = transform.GetChild(1);
+        face = this.transform.FindChild("Sprite").gameObject;
+        boomerang = this.transform.GetChild(1).FindChild("Boomerang").gameObject;
+        face.GetComponent<SpriteRenderer>().sprite = head_;
+        //getting sprite list
+        otherhead = GameObject.Find("Main Camera").GetComponent<_NetworkManager>().Heads;
     }
 	
 	// Update is called once per frame
@@ -24,9 +43,13 @@ public class NetworkSmoother : Photon.MonoBehaviour {
         { }
         else
         {
+
+            //if the photon view isnt ours we update the client computers copys with the details they need including pos and skins/name
             transform.position = Vector3.Lerp(transform.position, realpos, .1F);
             childsprite.rotation = Quaternion.Lerp(childsprite.rotation, realrot, .1F);
             nametext.text = name_;
+            face.GetComponent<SpriteRenderer>().sprite = otherhead[headnum];
+              
             
         }
 	}
@@ -40,6 +63,7 @@ public class NetworkSmoother : Photon.MonoBehaviour {
             stream.SendNext(transform.position);
             stream.SendNext(childsprite.rotation);
             stream.SendNext((string)name_);
+            stream.SendNext((int)headnum);
         }
         else
         {
@@ -48,6 +72,7 @@ public class NetworkSmoother : Photon.MonoBehaviour {
             realpos = (Vector3)stream.ReceiveNext();
             realrot = (Quaternion)stream.ReceiveNext();
             name_ = (string)stream.ReceiveNext();
+            headnum = (int)stream.ReceiveNext();
 
         }
     }

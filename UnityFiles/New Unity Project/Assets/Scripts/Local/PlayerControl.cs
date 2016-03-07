@@ -31,7 +31,7 @@ public class PlayerControl : MonoBehaviour {
 		Vector2 a = Camera.main.WorldToViewportPoint (transform.position);
 		Vector2 b = Camera.main.ScreenToViewportPoint (Input.mousePosition);
 
-		float angle = (Mathf.Atan2(a.y - b.y, a.x - b.x) * Mathf.Rad2Deg) + 90;
+		float angle = (Mathf.Atan2(a.y - b.y, a.x - b.x) * Mathf.Rad2Deg);
 		sprite.transform.rotation = Quaternion.Euler (new Vector3(90, 270, angle));
 	}
 }
