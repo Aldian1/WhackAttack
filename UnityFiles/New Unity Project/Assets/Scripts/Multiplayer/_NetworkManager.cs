@@ -7,7 +7,7 @@ public class _NetworkManager : Photon.MonoBehaviour {
 
     public Text ConnectionDetails;
 
-    public GameObject loginscreen,connectionscreen,mainscreen,bg;
+    public GameObject loginscreen,connectionscreen,mainscreen,bg,canvasoverlay;
 
     public GameObject player;
 
@@ -89,6 +89,7 @@ public class _NetworkManager : Photon.MonoBehaviour {
         go.GetComponentInChildren<Text>().text = PlayersName;
         go.GetComponent<NetworkSmoother>().head_ = Heads[currentsprite];
         go.GetComponent<NetworkSmoother>().headnum = currentsprite;
+        canvasoverlay.SetActive(true);
     }
 
     public void quit()
