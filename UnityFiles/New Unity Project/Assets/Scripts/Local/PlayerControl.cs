@@ -86,7 +86,7 @@ public class PlayerControl : MonoBehaviour
             Debug.Log("Input");
             if (staminabar.fillAmount > 0)
             {
-                staminabar.fillAmount -= .2F;
+                staminabar.fillAmount -= .5F;
                 rb.AddForce(sprite.transform.right * dashpower);
       
             }
@@ -97,7 +97,7 @@ public class PlayerControl : MonoBehaviour
             Debug.Log("Input");
             if (staminabar.fillAmount > 0)
             {
-                staminabar.fillAmount -= .2F;
+                staminabar.fillAmount -= .5F;
                 rb.AddForce(-sprite.transform.right * dashpower);
 
             }
